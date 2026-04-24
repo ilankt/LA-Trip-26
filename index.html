@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Los Angeles &amp; Santa Barbara — May 19–26, 2026</title>
+
+  <!-- Google Fonts: Fraunces (variable) + Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500;1,9..144,600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+
+  <!-- Tailwind CDN (utility layer) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      corePlugins: { preflight: false },
+      theme: {
+        extend: {
+          colors: {
+            paper:      '#F7F4EF',
+            ink:        '#1F1F1D',
+            terracotta: '#C87A5C',
+            sage:       '#8A9A6B',
+          },
+          fontFamily: {
+            display: ['Fraunces', 'Georgia', 'serif'],
+            body:    ['Inter', 'system-ui', 'sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
+
+  <!-- Site stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- ============================================================
+     MOBILE NAV OVERLAY + DRAWER
+     ============================================================ -->
+<div id="nav-overlay" class="nav-overlay"></div>
+
+<nav id="mobile-nav" aria-label="Mobile navigation">
+  <ul>
+    <li><a href="#day-1">Day 1 &mdash; Arrival</a></li>
+    <li><a href="#day-2">Day 2 &mdash; Getty</a></li>
+    <li><a href="#day-3">Day 3 &mdash; Griffith</a></li>
+    <li><a href="#day-4">Day 4 &mdash; The Drive</a></li>
+    <li><a href="#day-5">Day 5 &mdash; Wine Country</a></li>
+    <li><a href="#day-6">Day 6 &mdash; Mission</a></li>
+    <li><a href="#day-7">Day 7 &mdash; Downtown</a></li>
+    <li><a href="#day-8">Day 8 &mdash; Venice</a></li>
+    <li><a href="#hotel">Hotel Californian</a></li>
+    <li><a href="#reservations">Reservations</a></li>
+  </ul>
+</nav>
+
+<!-- ============================================================
+     STICKY NAV
+     ============================================================ -->
+<nav id="site-nav" aria-label="Site navigation">
+  <a href="#hero" class="nav-wordmark">May 19–26</a>
+
+  <ul class="nav-links">
+    <li><a href="#day-1">Day 1</a></li>
+    <li><a href="#day-2">Day 2</a></li>
+    <li><a href="#day-3">Day 3</a></li>
+    <li><a href="#day-4">Day 4</a></li>
+    <li><a href="#day-5">Day 5</a></li>
+    <li><a href="#day-6">Day 6</a></li>
+    <li><a href="#day-7">Day 7</a></li>
+    <li><a href="#day-8">Day 8</a></li>
+    <li><a href="#hotel">Hotel</a></li>
+    <li><a href="#reservations">Reservations</a></li>
+  </ul>
+
+  <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+</nav>
+
+
+<!-- ============================================================
+     HERO
+     ============================================================ -->
+<section id="hero" aria-label="Introduction">
+  <div class="hero-bg" aria-hidden="true"></div>
+  <div class="hero-content">
+    <p class="eyebrow">A WEEK ON THE COAST</p>
+    <h1>Los Angeles<br>&amp; Santa Barbara</h1>
+    <p class="dates">May 19 &ndash; 26, 2026</p>
+    <p class="subtitle"><em>Seven days. Two cities. One road between them.</em></p>
+    <div class="scroll-cue" aria-hidden="true">&#8595;</div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     THE PITCH
+     ============================================================ -->
+<section id="pitch">
+  <div class="section-inner">
+    <div class="section-header fade-up" style="text-align:center;">
+      <p class="eyebrow">The Shape of the Week</p>
+    </div>
+
+    <div class="prose fade-up">
+      <p>A week in Los Angeles doesn't have to mean seven days in Los Angeles. The flight from Tel Aviv lands us in a city that's as much a collection of neighborhoods as it is a single place &mdash; and the coast just north of it, up the Pacific Coast Highway, opens into something quieter: Santa Barbara, a town with Spanish-tile roofs and a working waterfront, and behind it the Santa Ynez valley, thirty minutes inland, where the vineyards start.</p>
+
+      <p>So the plan is this. Four days in Los Angeles &mdash; the Getty, the Academy Museum, Griffith Observatory at sunset, and a slow dinner in the Arts District. Then a drive up the coast on a Friday morning, lunch at Malibu Pier, a stop at El Matador Beach for the sea stacks, and two nights at Hotel Californian on State Street. One of those days is for the wine country. The other is for Santa Barbara itself &mdash; the Mission, the waterfront, and not much else.</p>
+
+      <blockquote class="pull-quote">&#8220;The drive up the coast<br>is itself the good part.&#8221;</blockquote>
+
+      <p>Sunday afternoon we drive back. Two more days in LA &mdash; downtown this time, The Broad and Grand Central Market &mdash; and then Venice on the way to the airport. No wasted days. No zig-zagging. The Santa Barbara leg is the good surprise in the middle.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     THE ROUTE
+     ============================================================ -->
+<section id="route">
+  <div class="section-inner">
+    <div class="section-header fade-up">
+      <p class="eyebrow">The Route</p>
+      <h2>Eight Days, One Loop</h2>
+    </div>
+
+    <!-- Overview Leaflet map -->
+    <div class="fade-up">
+      <div id="overview-map" aria-label="Overview map of the route"></div>
+    </div>
+
+    <!-- Timeline strip -->
+    <div class="timeline fade-up" role="list" aria-label="Day by day timeline">
+      <div class="tl-stop" role="listitem">
+        <div class="tl-dot"></div>
+        <div class="tl-day">Day 1</div>
+        <div class="tl-date">Tue May 19</div>
+        <div class="tl-label">Arrival &middot; Santa Monica</div>
+      </div>
+      <div class="tl-stop" role="listitem">
+        <div class="tl-dot"></div>
+        <div class="tl-day">Day 2</div>
+        <div class="tl-date">Wed May 20</div>
+        <div class="tl-label">Getty &amp; Westside</div>
+      </div>
+      <div class="tl-stop" role="listitem">
+        <div class="tl-dot"></div>
+        <div class="tl-day">Day 3</div>
+        <div class="tl-date">Thu May 21</div>
+        <div class="tl-label">Hollywood &amp; Griffith</div>
+      </div>
+      <div class="tl-stop" role="listitem">
+        <div class="tl-dot"></div>
+        <div class="tl-day">Day 4</div>
+        <div class="tl-date">Fri May 22</div>
+        <div class="tl-label">PCH &rarr; Santa Barbara</div>
+      </div>
+      <div class="tl-stop" role="listitem">
+        <div class="tl-dot"></div>
+        <div class="tl-day">Day 5</div>
+        <div class="tl-date">Sat May 23</div>
+        <div class="tl-label">Santa Ynez Wine Country</div>
+      </div>
+      <div class="tl-stop" role="listitem">
+        <div class="tl-dot"></div>
+        <div class="tl-day">Day 6</div>
+        <div class="tl-date">Sun May 24</div>
+        <div class="tl-label">SB Morning &rarr; Back to LA</div>
+      </div>
+      <div class="tl-stop" role="listitem">
+        <div class="tl-dot"></div>
+        <div class="tl-day">Day 7</div>
+        <div class="tl-date">Mon May 25</div>
+        <div class="tl-label">Downtown LA</div>
+      </div>
+      <div class="tl-stop" role="listitem">
+        <div class="tl-dot"></div>
+        <div class="tl-day">Day 8</div>
+        <div class="tl-date">Tue May 26</div>
+        <div class="tl-label">Venice &rarr; LAX</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     DAY 1 — TUE MAY 19 · Arrival · Santa Monica
+     ============================================================ -->
+<section id="day-1" class="day-section">
+  <div class="section-inner">
+    <div class="day-layout">
+
+      <div class="day-image-col fade-up">
+        <div class="photo-wrap">
+          <img src="assets/images/day1.jpg"
+               alt="Santa Monica Pier at dusk, golden light over the Pacific"
+               class="day-photo" loading="lazy">
+          <p class="photo-caption">Santa Monica Pier, dusk</p>
+        </div>
+      </div>
+
+      <div class="day-text-col fade-up">
+        <div>
+          <p class="eyebrow day-eyebrow">DAY 1 &mdash; TUE MAY 19</p>
+          <h2>Landing slowly</h2>
+        </div>
+        <p class="day-narrative">We land mid-afternoon, already tired, and we don't pretend otherwise. Check in, drop the bags, walk the Santa Monica boardwalk until the sun is gone. Dinner somewhere we can walk to. The rest of the week can wait.</p>
+        <div class="must-do">
+          <p class="eyebrow">Must Do</p>
+          <ul class="must-do-list">
+            <li>Walk to the end of the pier before sunset &mdash; the Pacific goes orange from out there</li>
+            <li>Keep walking south along the beach bike path as the sky changes colour</li>
+            <li>Dinner on Main Street or Ocean Ave &mdash; both are a 10-minute walk from the pier</li>
+          </ul>
+        </div>
+        <ul class="stops-list" aria-label="Stops for Day 1">
+          <li>
+            <span class="stop-pin" aria-hidden="true">1</span>
+            <span class="stop-text">LAX arrival &mdash; LY 5</span>
+            <span class="stop-time">2:55 PM</span>
+          </li>
+          <li>
+            <span class="stop-pin" aria-hidden="true">2</span>
+            <span class="stop-text">Hotel check-in, Santa Monica</span>
+            <span class="stop-time">~5:00 PM</span>
+          </li>
+          <li>
+            <span class="stop-pin" aria-hidden="true">3</span>
+            <span class="stop-text">Santa Monica Pier sunset walk</span>
+            <span class="stop-time">Evening</span>
+          </li>
+        </ul>
+      </div>
+
+
+    </div>
+
+    <div class="mini-map" id="map-day-1" aria-label="Day 1 map"></div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     DAY 2 — WED MAY 20 · The Getty
+     ============================================================ -->
+<section id="day-2" class="day-section">
+  <div class="section-inner">
+    <div class="day-layout reverse">
+
+      <div class="day-image-col fade-up">
+        <div class="photo-wrap">
+          <img src="assets/images/day2-getty.jpg"
+               alt="The Getty Center, travertine architecture on the hill above Los Angeles"
+               class="day-photo" loading="lazy">
+          <p class="photo-caption">The Getty Center campus, Los Angeles</p>
+        </div>
+        <div class="photo-wrap">
+          <img src="assets/images/day2-garden.jpg"
+               alt="The Central Garden at the Getty Center"
+               class="day-photo" loading="lazy">
+          <p class="photo-caption">Robert Irwin's Central Garden</p>
+        </div>
+      </div>
+
+      <div class="day-text-col fade-up">
+        <div>
+          <p class="eyebrow day-eyebrow">DAY 2 &mdash; WED MAY 20</p>
+          <h2>Travertine and gardens</h2>
+        </div>
+        <p class="day-narrative">The Getty Center earns every superlative. Richard Meier's travertine campus sits on a hill above the 405, and you ride a tram up to reach it. Half a day here is the right amount &mdash; the collection, the gardens, the Pacific views from the terrace. Lunch down in Brentwood afterward.</p>
+        <div class="must-do">
+          <p class="eyebrow">Must Do</p>
+          <ul class="must-do-list">
+            <li>Take the tram up from the parking structure &mdash; the campus reveal at the top sets the whole mood</li>
+            <li>Robert Irwin's Central Garden: the path curves so you can never see the whole thing at once &mdash; it changes constantly</li>
+            <li>The west-facing terrace: the view takes in the 405, the Pacific, and on a clear day Catalina Island</li>
+          </ul>
+        </div>
+        <ul class="stops-list" aria-label="Stops for Day 2">
+          <li>
+            <span class="stop-pin" aria-hidden="true">1</span>
+            <span class="stop-text">The Getty Center<span class="stop-addr">1200 Getty Center Dr, Brentwood &mdash; tram from Level 2 parking</span></span>
+            <span class="stop-time">10:30 AM</span>
+          </li>
+          <li>
+            <span class="stop-pin" aria-hidden="true">2</span>
+            <span class="stop-text">Lunch in Brentwood</span>
+            <span class="stop-time">1:00 PM</span>
+          </li>
+          <li>
+            <span class="stop-pin" aria-hidden="true">3</span>
+            <span class="stop-text">Easy evening, Westside</span>
+            <span class="stop-time">Evening</span>
+          </li>
+        </ul>
+      </div>
+
+
+    </div>
+
+    <div class="mini-map" id="map-day-2" aria-label="Day 2 map"></div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     DAY 3 — THU MAY 21 · Hollywood & Griffith
+     ============================================================ -->
+<section id="day-3" class="day-section">
+  <div class="section-inner">
+    <div class="day-layout">
+
+      <div class="day-image-col fade-up">
+        <div class="photo-wrap">
+          <img src="assets/images/day3-academy.jpg"
+               alt="Academy Museum of Motion Pictures, Wilshire Boulevard"
+               class="day-photo" loading="lazy">
+          <p class="photo-caption">Academy Museum of Motion Pictures, Wilshire Blvd</p>
+        </div>
+        <div class="photo-wrap">
+          <img src="assets/images/day3-griffith.jpg"
+               alt="Griffith Observatory at sunset with the Los Angeles skyline below"
+               class="day-photo" loading="lazy">
+          <p class="photo-caption">Griffith Observatory, Los Angeles</p>
+        </div>
+      </div>
+
+      <div class="day-text-col fade-up">
+        <div>
+          <p class="eyebrow day-eyebrow">DAY 3 &mdash; THU MAY 21</p>
+          <h2>Film history, then the city from above</h2>
+        </div>
+        <p class="day-narrative">The Academy Museum opened recently and is quietly the best museum in LA right now &mdash; costumes, props, the craft of filmmaking. Three hours, easy. Lunch on Larchmont, then up to Griffith Observatory. Time the arrival for an hour before sunset: the city goes from gold to blue to a grid of lights.</p>
+        <div class="must-do">
+          <p class="eyebrow">Must Do</p>
+          <ul class="must-do-list">
+            <li>The Academy Sphere &mdash; the glass globe attached to the Wilshire building is the most distinctive piece of architecture built in LA in a decade</li>
+            <li>Arrive Griffith at 5:30 PM: 90 minutes of light remaining, the city turns from gold to purple as you watch</li>
+            <li>Walk to the east-facing platform &mdash; that's where the entire LA basin grid stretches to the horizon</li>
+          </ul>
+        </div>
+        <ul class="stops-list" aria-label="Stops for Day 3">
+          <li>
+            <span class="stop-pin" aria-hidden="true">1</span>
+            <span class="stop-text">Academy Museum of Motion Pictures<span class="stop-addr">6067 Wilshire Blvd, Mid-Wilshire &mdash; book timed ticket in advance</span></span>
+            <span class="stop-time">10:00 AM</span>
+          </li>
+          <li>
+            <span class="stop-pin" aria-hidden="true">2</span>
+            <span class="stop-text">Lunch on Larchmont Boulevard</span>
+            <span class="stop-time">1:30 PM</span>
+          </li>
+          <li>
+            <span class="stop-pin" aria-hidden="true">3</span>
+            <span class="stop-text">Griffith Observatory<span class="stop-addr">2800 E Observatory Rd, Los Feliz &mdash; drive or Uber, parking lot fills fast after 5 PM</span></span>
+            <span class="stop-time">5:30 PM</span>
+          </li>
+        </ul>
+      </div>
+
+
+    </div>
+
+    <div class="mini-map" id="map-day-3" aria-label="Day 3 map"></div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     DAY 4 — FRI MAY 22 · PCH → Santa Barbara
+     ============================================================ -->
+<section id="day-4" class="day-section">
+  <div class="section-inner">
+    <div class="day-layout reverse">
+
+      <div class="day-image-col fade-up">
+        <div class="photo-wrap">
+          <img src="assets/images/day4-pch.jpg"
+               alt="Pacific Coast Highway curving along the California coast"
+               class="day-photo" loading="lazy">
+          <p class="photo-caption">Pacific Coast Highway, California</p>
+        </div>
+        <div class="photo-wrap">
+          <img src="assets/images/day4-matador.jpg"
+               alt="Coastal rock formations at El Matador State Beach"
+               class="day-photo" loading="lazy">
+          <p class="photo-caption">El Matador State Beach, Malibu</p>
+        </div>
+      </div>
+
+      <div class="day-text-col fade-up">
+        <div>
+          <p class="eyebrow day-eyebrow">DAY 4 &mdash; FRI MAY 22</p>
+          <h2>The drive is the day</h2>
+        </div>
+        <p class="day-narrative">Mid-morning checkout, then the coast. The Pacific Coast Highway from Santa Monica to Santa Barbara is two and a half hours of cliffs and water, and there are two stops worth making. Lunch on the pier at Malibu Farm. An hour at El Matador Beach, where the sand gives way to sea stacks and caves. Check in at Hotel Californian by evening &mdash; one block from the beach, on the edge of the Funk Zone &mdash; and walk up State Street for dinner.</p>
+        <div class="must-do">
+          <p class="eyebrow">Must Do</p>
+          <ul class="must-do-list">
+            <li>El Matador: walk north along the sand to the sea arch and sea cave &mdash; only reachable at low tide, worth checking the tide chart in advance</li>
+            <li>Malibu Farm: sit at the outdoor tables at the end of the pier, not inside &mdash; the ocean is literally underneath you</li>
+            <li>Arrive Santa Barbara by 6 PM &mdash; the Funk Zone (Yamazaki, Municipal, El Yauco) is walkable from the hotel and open until 8</li>
+          </ul>
+        </div>
+        <ul class="stops-list" aria-label="Stops for Day 4">
+          <li>
+            <span class="stop-pin" aria-hidden="true">1</span>
+            <span class="stop-text">Checkout LA hotel</span>
+            <span class="stop-time">10:30 AM</span>
+          </li>
+          <li>
+            <span class="stop-pin" aria-hidden="true">2</span>
+            <span class="stop-text">Malibu Farm Pier Cafe<span class="stop-addr">23000 Pacific Coast Hwy, Malibu &mdash; sit outdoors at the end of the pier</span></span>
+            <span class="stop-time">12:30 PM</span>
+          </li>
+          <li>
+            <span class="stop-pin" aria-hidden="true">3</span>
+            <span class="stop-text">El Matador State Beach<span class="stop-addr">32350 Pacific Coast Hwy, Malibu &mdash; sea stacks, cave, rocky coves at low tide</span></span>
+            <span class="stop-time">2:30 PM</span>
+          </li>
+          <li>
+            <span class="stop-pin" aria-hidden="true">4</span>
+            <span class="stop-text">Hotel Californian check-in<span class="stop-addr">36 State St, Santa Barbara &mdash; Funk Zone, 1 block from the beach</span></span>
+            <span class="stop-time">5:00 PM</span>
+          </li>
+        </ul>
+      </div>
+
+
+    </div>
+
+    <div class="mini-map" id="map-day-4" aria-label="Day 4 map"></div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     DAY 5 — SAT MAY 23 · Santa Ynez Wine Country
+     ============================================================ -->
+<section id="day-5" class="day-section">
+  <div class="section-inner">
+    <div class="day-layout">
+
+      <div class="day-image-col fade-up">
+        <div class="photo-wrap">
+          <img src="assets/images/day5-vineyard.jpg"
+               alt="Rows of golden vineyard vines in Central Coast California"
+               class="day-photo" loading="lazy">
+          <p class="photo-caption">Vineyard rows, Central Coast California</p>
+        </div>
+        <div class="photo-wrap">
+          <img src="assets/images/day5-autumn.jpg"
+               alt="Autumn vineyard with golden leaves"
+               class="day-photo" loading="lazy">
+          <p class="photo-caption">Autumn vines, Livermore Valley</p>
+        </div>
+      </div>
+
+      <div class="day-text-col fade-up">
+        <div>
+          <p class="eyebrow day-eyebrow">DAY 5 &mdash; SAT MAY 23</p>
+          <h2>Thirty minutes inland</h2>
+        </div>
+        <p class="day-narrative">Los Olivos is a wine-tasting village you can walk around. Park once, visit three rooms on foot, have a long lunch somewhere with a patio. Refugio Ranch for the Grenache, Stolpman for the Roussanne, and if Bell's has a lunch reservation open that's the one &mdash; a Michelin-starred French bistro in what still looks like a one-stoplight town. Back to Santa Barbara before sunset. Dinner in the Funk Zone near the hotel.</p>
+        <div class="must-do">
+          <p class="eyebrow">Must Do</p>
+          <ul class="must-do-list">
+            <li>Park on Grand Ave in Los Olivos and walk &mdash; the entire village is four blocks, everything is within 5 minutes</li>
+            <li>Bell's is the priority reservation &mdash; if the online system shows full, call directly; they often hold a few walk-in spots for lunch</li>
+            <li>Ballard Canyon Road on the return: 15-minute detour through the narrowest and best-looking part of the valley &mdash; turn off at Ballard Canyon Rd off Hwy 246</li>
+          </ul>
+        </div>
+        <ul class="stops-list" aria-label="Stops for Day 5">
+          <li>
+            <span class="stop-pin" aria-hidden="true">1</span>
+            <span class="stop-text">Los Olivos village walk</span>
+            <span class="stop-time">from 11:30 AM</span>
+          </li>
+          <li>
+            <span class="stop-pin" aria-hidden="true">2</span>
+            <span class="stop-text">Refugio Ranch tasting room</span>
+            <span class="stop-time">11:30 AM</span>
+          </li>
+          <li>
+            <span class="stop-pin" aria-hidden="true">3</span>
+            <span class="stop-text">Lunch at Bell's (reservation required)</span>
+            <span class="stop-time">1:00 PM</span>
+          </li>
+          <li>
+            <span class="stop-pin" aria-hidden="true">4</span>
+            <span class="stop-text">Hotel Californian rooftop, sunset</span>
+            <span class="stop-time">Evening</span>
+          </li>
+        </ul>
+      </div>
+
+
+    </div>
+
+    <div class="mini-map" id="map-day-5" aria-label="Day 5 map"></div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     DAY 6 — SUN MAY 24 · SB Morning → Back to LA
+     ============================================================ -->
+<section id="day-6" class="day-section">
+  <div class="section-inner">
+    <div class="day-layout reverse">
+
+      <div class="day-image-col fade-up">
+        <div class="photo-wrap">
+          <img src="assets/images/day6-mission.jpg"
+               alt="Old Mission Santa Barbara, the Queen of the Missions"
+               class="day-photo" loading="lazy">
+          <p class="photo-caption">Old Mission Santa Barbara &mdash; the Queen of the Missions</p>
+        </div>
+        <div class="photo-wrap">
+          <img src="assets/images/day6-sb.jpg"
+               alt="Spanish Colonial architecture, Santa Barbara"
+               class="day-photo" loading="lazy">
+          <p class="photo-caption">Spanish Colonial architecture, Santa Barbara</p>
+        </div>
+      </div>
+
+      <div class="day-text-col fade-up">
+        <div>
+          <p class="eyebrow day-eyebrow">DAY 6 &mdash; SUN MAY 24</p>
+          <h2>The Queen of the Missions, then south</h2>
+        </div>
+        <p class="day-narrative">One easy morning in Santa Barbara before the drive back. The Old Mission is the city's founding building &mdash; Spanish colonial, ochre stucco, a long garden, and a view down to the ocean from the forecourt. Brunch at Helena Avenue Bakery. On the road by two, back in LA by four, dinner at Bestia or Bavel in the Arts District &mdash; whichever has the earlier reservation.</p>
+        <div class="must-do">
+          <p class="eyebrow">Must Do</p>
+          <ul class="must-do-list">
+            <li>Arrive the Mission at 10 AM before tour groups &mdash; the rose garden and the cemetery behind the church are quietest then</li>
+            <li>Walk around to the forecourt: the view south from there, over the palm trees down to the harbour, is one of the best in Santa Barbara</li>
+            <li>Helena Avenue Bakery: pastry plate, coffee, eat outside on the small front patio &mdash; 131 Anacapa St, Funk Zone</li>
+          </ul>
+        </div>
+        <ul class="stops-list" aria-label="Stops for Day 6">
+          <li>
+            <span class="stop-pin" aria-hidden="true">1</span>
+            <span class="stop-text">Old Mission Santa Barbara<span class="stop-addr">2201 Laguna St, Santa Barbara &mdash; Spanish colonial, twin towers, rose garden &amp; cemetery</span></span>
+            <span class="stop-time">10:00 AM</span>
+          </li>
+          <li>
+            <span class="stop-pin" aria-hidden="true">2</span>
+            <span class="stop-text">Brunch at Helena Avenue Bakery</span>
+            <span class="stop-time">11:30 AM</span>
+          </li>
+          <li>
+            <span class="stop-pin" aria-hidden="true">3</span>
+            <span class="stop-text">Drive back to LA &mdash; 101 South via Ventura &amp; Camarillo<span class="stop-addr">~2 hrs &middot; Santa Barbara to Arts District &middot; no toll roads</span></span>
+            <span class="stop-time">2:00 PM</span>
+          </li>
+          <li>
+            <span class="stop-pin" aria-hidden="true">4</span>
+            <span class="stop-text">Dinner: Bestia or Bavel, Arts District<span class="stop-addr">Bestia: 2121 E 7th Pl &middot; Bavel: 500 Mateo St &mdash; both walkable from each other</span></span>
+            <span class="stop-time">~7:00 PM</span>
+          </li>
+        </ul>
+      </div>
+
+
+    </div>
+
+    <div class="mini-map" id="map-day-6" aria-label="Day 6 map"></div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     DAY 7 — MON MAY 25 · Downtown LA
+     ============================================================ -->
+<section id="day-7" class="day-section">
+  <div class="section-inner">
+    <div class="day-layout">
+
+      <div class="day-image-col fade-up">
+        <div class="photo-wrap">
+          <img src="assets/images/day7-museum.jpg"
+               alt="Contemporary art museum, Grand Avenue, Los Angeles"
+               class="day-photo" loading="lazy">
+          <p class="photo-caption">Grand Avenue, Downtown Los Angeles</p>
+        </div>
+        <div class="photo-wrap">
+          <img src="assets/images/day7-market.jpg"
+               alt="Grand Central Market, Los Angeles, neon signs and crowds"
+               class="day-photo" loading="lazy">
+          <p class="photo-caption">Grand Central Market, Downtown LA</p>
+        </div>
+      </div>
+
+      <div class="day-text-col fade-up">
+        <div>
+          <p class="eyebrow day-eyebrow">DAY 7 &mdash; MON MAY 25</p>
+          <h2>Contemporary, concrete, and market lunch</h2>
+        </div>
+        <p class="day-narrative">The Broad is an oddity &mdash; a contemporary art museum funded by billionaires, set inside a perforated honeycomb shell across from Disney Hall. Free timed ticket, one hour inside. Grand Central Market is a two-minute walk across the street: a hundred years old, and still the best lunch in downtown. Afternoon wandering the Arts District &mdash; galleries, warehouses turned into coffee roasters, murals.</p>
+        <div class="must-do">
+          <p class="eyebrow">Must Do</p>
+          <ul class="must-do-list">
+            <li>Pre-book The Broad online before coming &mdash; tickets are free but timed and fill up weeks in advance; walk-up is hit-or-miss</li>
+            <li>Grand Central Market: Eggslut window or Wexler's Deli for lunch &mdash; eat at the counter, not at a table</li>
+            <li>Walk east from GCM on 6th Street into the Arts District &mdash; 15 minutes on foot, passes the best murals and gallery frontages</li>
+          </ul>
+        </div>
+        <ul class="stops-list" aria-label="Stops for Day 7">
+          <li>
+            <span class="stop-pin" aria-hidden="true">1</span>
+            <span class="stop-text">The Broad<span class="stop-addr">221 S Grand Ave, Downtown &mdash; free timed ticket, book online 2 weeks ahead</span></span>
+            <span class="stop-time">11:00 AM</span>
+          </li>
+          <li>
+            <span class="stop-pin" aria-hidden="true">2</span>
+            <span class="stop-text">Grand Central Market<span class="stop-addr">317 S Broadway, Downtown &mdash; 2-min walk, open since 1917</span></span>
+            <span class="stop-time">1:30 PM</span>
+          </li>
+          <li>
+            <span class="stop-pin" aria-hidden="true">3</span>
+            <span class="stop-text">Arts District afternoon</span>
+            <span class="stop-time">3:00 PM</span>
+          </li>
+        </ul>
+      </div>
+
+
+    </div>
+
+    <div class="mini-map" id="map-day-7" aria-label="Day 7 map"></div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     DAY 8 — TUE MAY 26 · Venice → LAX
+     ============================================================ -->
+<section id="day-8" class="day-section">
+  <div class="section-inner">
+    <div class="day-layout reverse">
+
+      <div class="day-image-col fade-up">
+        <div class="photo-wrap">
+          <img src="assets/images/day8-venice.jpg"
+               alt="Palm trees along Venice Beach, Los Angeles"
+               class="day-photo" loading="lazy">
+          <p class="photo-caption">Venice Beach, Los Angeles</p>
+        </div>
+      </div>
+
+      <div class="day-text-col fade-up">
+        <div>
+          <p class="eyebrow day-eyebrow">DAY 8 &mdash; TUE MAY 26</p>
+          <h2>One last breakfast</h2>
+        </div>
+        <p class="day-narrative">Breakfast at Gjusta in Venice &mdash; if there's a line, the line moves, and it's worth it. A slow walk down Abbot Kinney. Maybe one more beach walk if there's time. Then LAX, with a comfortable buffer for traffic. Flight home at 1:30 PM.</p>
+        <div class="must-do">
+          <p class="eyebrow">Must Do</p>
+          <ul class="must-do-list">
+            <li>Gjusta: go before 9 AM or after 10:30 &mdash; the peak queue between those times adds 30 minutes; 320 Sunset Ave, Venice</li>
+            <li>Abbot Kinney is 10 walkable blocks &mdash; best street in LA for a last look: bookshops, coffee, things to bring home</li>
+            <li>Leave Venice no later than 10 AM &mdash; the 405 South to LAX on a Tuesday is unpredictable and the flight doesn't wait</li>
+          </ul>
+        </div>
+        <ul class="stops-list" aria-label="Stops for Day 8">
+          <li>
+            <span class="stop-pin" aria-hidden="true">1</span>
+            <span class="stop-text">Gjusta or Great White, Venice</span>
+            <span class="stop-time">Morning</span>
+          </li>
+          <li>
+            <span class="stop-pin" aria-hidden="true">2</span>
+            <span class="stop-text">Abbot Kinney Boulevard stroll</span>
+            <span class="stop-time">10:00 AM</span>
+          </li>
+          <li>
+            <span class="stop-pin" aria-hidden="true">3</span>
+            <span class="stop-text">LAX departure &mdash; LY 6</span>
+            <span class="stop-time">1:30 PM</span>
+          </li>
+        </ul>
+      </div>
+
+
+    </div>
+
+    <div class="mini-map" id="map-day-8" aria-label="Day 8 map"></div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     HOTEL CALIFORNIAN
+     ============================================================ -->
+<section id="hotel">
+  <div class="section-inner">
+
+    <div class="section-header fade-up">
+      <p class="eyebrow">Two Nights &middot; May 22 &amp; 23</p>
+      <h2>Our base in Santa Barbara</h2>
+      <p class="hotel-meta" style="margin-top:0.6rem;">36 State St, Santa Barbara, CA 93101</p>
+    </div>
+
+    <div class="hotel-layout fade-up">
+
+      <div>
+        <img src="assets/images/hotel-ext.jpg"
+             alt="Hotel Californian Santa Barbara, Spanish-Moorish architecture"
+             class="hotel-main-photo" loading="lazy">
+        <p class="photo-caption">Hotel Californian &mdash; Spanish-Moorish architecture, foot of State Street</p>
+      </div>
+
+      <div class="hotel-right">
+        <div class="hotel-detail-grid">
+          <div>
+            <img src="assets/images/hotel-coast.jpg"
+                 alt="Santa Barbara coastline as seen from the hotel rooftop"
+                 class="hotel-detail-photo" loading="lazy">
+            <p class="photo-caption">Harbor view from the rooftop</p>
+          </div>
+          <div>
+            <img src="assets/images/day6-sb.jpg"
+                 alt="Spanish Colonial architecture detail, Santa Barbara"
+                 class="hotel-detail-photo" loading="lazy">
+            <p class="photo-caption">Spanish Colonial detail, State Street</p>
+          </div>
+          <div>
+            <img src="assets/images/day6-mission.jpg"
+                 alt="Old Mission Santa Barbara, five minutes north of the hotel"
+                 class="hotel-detail-photo" loading="lazy">
+            <p class="photo-caption">Old Mission, five minutes north</p>
+          </div>
+          <div>
+            <img src="assets/images/wine-glass.jpg"
+                 alt="Wine tasting in the Funk Zone"
+                 class="hotel-detail-photo" loading="lazy">
+            <p class="photo-caption">Funk Zone tasting rooms, walkable</p>
+          </div>
+        </div>
+
+        <div>
+          <p class="hotel-body">Hotel Californian sits at the foot of State Street, on the edge of the Funk Zone and one block from the beach. The architecture is Spanish-Moorish &mdash; arched doorways, tiled floors, wrought-iron balconies &mdash; and the rooftop pool looks over the harbor. Walkable to two dozen restaurants, tasting rooms, and coffee shops. Rated 4.3 stars across 550+ reviews. The hotel runs a shuttle further up State Street when we want to venture out.</p>
+
+          <ul class="hotel-amenities">
+            <li>Rooftop pool with harbor views</li>
+            <li>Funk Zone location &mdash; walkable everywhere</li>
+            <li>Spa on-site</li>
+            <li>Complimentary shuttle up State Street</li>
+          </ul>
+
+          <div class="hotel-alt">
+            <strong>If this one is booked:</strong> Belmond El Encanto &mdash; hillside, more secluded, classic Santa Barbara. A quieter choice if we want to splurge.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SANTA YNEZ WINE COUNTRY FEATURE
+     ============================================================ -->
+<section id="wine">
+  <div class="section-inner">
+
+    <div class="section-header fade-up">
+      <p class="eyebrow">Day 5 &middot; Santa Ynez Valley</p>
+      <h2>Thirty minutes, another world</h2>
+    </div>
+
+    <div class="wine-images fade-up">
+      <div>
+        <img src="assets/images/wine-valley.jpg"
+             alt="Vineyard rows stretching across the Santa Ynez Valley"
+             class="wine-main-photo" loading="lazy">
+        <p class="photo-caption">Vineyard rows, Central Coast California</p>
+      </div>
+      <div class="wine-side">
+        <div>
+          <img src="assets/images/wine-building.jpg"
+               alt="Rustic winery tasting room with outdoor seating"
+               class="wine-side-photo" loading="lazy">
+          <p class="photo-caption">Tasting room, Los Olivos</p>
+        </div>
+        <div>
+          <img src="assets/images/day5-vineyard.jpg"
+               alt="Golden vineyard at golden hour, California"
+               class="wine-side-photo" loading="lazy">
+          <p class="photo-caption">Golden hour, Central Coast</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="wine-body fade-up">
+      <p>Los Olivos is the anchor &mdash; a walkable tasting-room village in the heart of the Santa Ynez Valley. We park once and visit three rooms on foot: Refugio Ranch for their Grenache and Blanc de Blanc, Stolpman for Rhone-style whites, and one more wherever the mood takes us. Lunch at Bell's if we can get a reservation &mdash; Michelin-starred French bistro, tiny room, book it a month out. If we want the scenic route back, the drive through Ballard Canyon passes through some of the best vineyards in California.</p>
+    </div>
+
+    <div class="wine-callouts fade-up">
+      <div class="wine-callout">
+        <h4>Refugio Ranch</h4>
+        <p>2990 Grand Ave, Los Olivos. Walk-ins usually fine. Grenache, Blanc de Blanc.</p>
+      </div>
+      <div class="wine-callout">
+        <h4>Bell's Restaurant</h4>
+        <p>Michelin-starred French bistro, Los Olivos. Tiny room. Reserve 30 days out &mdash; this is the one to book first.</p>
+      </div>
+      <div class="wine-callout">
+        <h4>Ballard Canyon</h4>
+        <p>Scenic drive on the return. 20 minutes each way through some of the best vineyards in California.</p>
+      </div>
+      <div class="wine-callout">
+        <h4>Solvang</h4>
+        <p>Danish-village kitsch, 10 min south. Skip if tired; worth a pass if we want the full Central Coast sweep.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ============================================================
+     RESERVATIONS CHECKLIST
+     ============================================================ -->
+<section id="reservations">
+  <div class="section-inner">
+
+    <div class="section-header fade-up">
+      <p class="eyebrow">Before We Go</p>
+      <h2>Reservations</h2>
+      <p class="res-intro">Check off as you book. State saves between visits.</p>
+    </div>
+
+    <div class="res-table fade-up" role="group" aria-label="Reservations checklist">
+
+      <div class="res-row" data-id="hotel-californian" role="checkbox" aria-checked="false" tabindex="0">
+        <div class="res-checkbox" aria-hidden="true"></div>
+        <div class="res-name">Hotel Californian</div>
+        <div class="res-what">2 nights, May 22 &amp; 23 &mdash; Santa Barbara</div>
+        <div class="res-deadline">ASAP &mdash; fills in May</div>
+        <span class="res-priority p-critical">Critical</span>
+      </div>
+
+      <div class="res-row" data-id="rental-car" role="checkbox" aria-checked="false" tabindex="0">
+        <div class="res-checkbox" aria-hidden="true"></div>
+        <div class="res-name">Rental Car</div>
+        <div class="res-what">Full week, LAX pickup</div>
+        <div class="res-deadline">2 weeks out</div>
+        <span class="res-priority p-critical">Critical</span>
+      </div>
+
+      <div class="res-row" data-id="bestia-bavel" role="checkbox" aria-checked="false" tabindex="0">
+        <div class="res-checkbox" aria-hidden="true"></div>
+        <div class="res-name">Bestia or Bavel</div>
+        <div class="res-what">Dinner May 24, Arts District</div>
+        <div class="res-deadline">Opens Apr 24</div>
+        <span class="res-priority p-high">High</span>
+      </div>
+
+      <div class="res-row" data-id="bells" role="checkbox" aria-checked="false" tabindex="0">
+        <div class="res-checkbox" aria-hidden="true"></div>
+        <div class="res-name">Bell's Restaurant</div>
+        <div class="res-what">Lunch May 23, Los Olivos</div>
+        <div class="res-deadline">30 days out</div>
+        <span class="res-priority p-high">High</span>
+      </div>
+
+      <div class="res-row" data-id="the-broad" role="checkbox" aria-checked="false" tabindex="0">
+        <div class="res-checkbox" aria-hidden="true"></div>
+        <div class="res-name">The Broad</div>
+        <div class="res-what">Free timed ticket, May 25</div>
+        <div class="res-deadline">2 weeks out</div>
+        <span class="res-priority p-medium">Medium</span>
+      </div>
+
+      <div class="res-row" data-id="academy-museum" role="checkbox" aria-checked="false" tabindex="0">
+        <div class="res-checkbox" aria-hidden="true"></div>
+        <div class="res-name">Academy Museum</div>
+        <div class="res-what">Tickets for May 21</div>
+        <div class="res-deadline">Anytime</div>
+        <span class="res-priority p-medium">Medium</span>
+      </div>
+
+      <div class="res-row" data-id="refugio-ranch" role="checkbox" aria-checked="false" tabindex="0">
+        <div class="res-checkbox" aria-hidden="true"></div>
+        <div class="res-name">Refugio Ranch</div>
+        <div class="res-what">Tasting May 23, Los Olivos</div>
+        <div class="res-deadline">Day-of is fine</div>
+        <span class="res-priority p-low">Low</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     PRACTICAL NOTES
+     ============================================================ -->
+<section id="notes">
+  <div class="section-inner">
+
+    <div class="section-header fade-up">
+      <p class="eyebrow">Good to Know</p>
+      <h2>Practical Notes</h2>
+    </div>
+
+    <div class="notes-grid fade-up">
+
+      <div class="note-block">
+        <h3>Weather</h3>
+        <ul>
+          <li>Los Angeles: 20–26&#8451;, mostly sunny, May Gray mornings possible</li>
+          <li>Santa Barbara: 18–22&#8451;, reliably sunny and clear</li>
+          <li>Santa Ynez: warmer inland, 24–28&#8451;</li>
+        </ul>
+      </div>
+
+      <div class="note-block">
+        <h3>Flights</h3>
+        <ul>
+          <li>Outbound: LY 5, TLV &rarr; LAX, landing Tue May 19, 2:55 PM</li>
+          <li>Return: LY 6, LAX &rarr; TLV, departing Tue May 26, 1:30 PM</li>
+          <li>Already booked &mdash; no action needed</li>
+        </ul>
+      </div>
+
+      <div class="note-block">
+        <h3>Car Rental</h3>
+        <ul>
+          <li>Pick up at LAX on Day 1</li>
+          <li>Required &mdash; PCH drive, wine country, and the Mission are not walkable</li>
+          <li>Return with buffer before the flight</li>
+        </ul>
+      </div>
+
+      <div class="note-block">
+        <h3>Packing</h3>
+        <ul>
+          <li>Layers &mdash; coastal evenings are cool, inland afternoons are warm</li>
+          <li>One nice outfit for dinner reservations</li>
+          <li>Walking shoes for State Street, Los Olivos, Arts District</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer>
+  <span>Built with care &middot; April 2026</span>
+  <span>Photography via Unsplash and Wikimedia Commons</span>
+</footer>
+
+
+<!-- Share button (fixed) -->
+<button class="share-btn" id="share-btn" aria-label="Copy link to this page">Share</button>
+
+
+<!-- ============================================================
+     SCRIPTS
+     ============================================================ -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="script.js"></script>
+
+</body>
+</html>
